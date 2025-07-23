@@ -161,7 +161,7 @@ class NeuralNetwork
                             outputLayer.gradient[i] = y_pred - y_true;
                         }
                         //compute other layers Gradients
-                        for (int l = (static_cast<int>(layers.size()) - 2); l > 0;l--)
+                        for (int l = (static_cast<int>(layers.size()) - 2); l > 0;--l)
                         {
                             for (size_t i = 0; i < weights[l].getRows();++i)
                             {
@@ -175,7 +175,7 @@ class NeuralNetwork
                             }
                         }
                         //Accumulate gradients
-                        for (int l = (static_cast<int>(layers.size()) - 2); l >= 0;l--)
+                        for (int l = (static_cast<int>(layers.size()) - 2); l >= 0;--l)
                         {
                             const std::vector<double>& activations = (l == 0) ? inputs[k] : layers[l].a;
 
