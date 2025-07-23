@@ -199,7 +199,7 @@ class NeuralNetwork
                     }
 
                     //update the weights and biases
-                    for (int l = (static_cast<int>(layers.size()) - 2); l >= 0;l--)
+                    for (int l = (static_cast<int>(layers.size()) - 2); l >= 0;--l)
                     {
                         for (size_t i = 0; i < weights[l].getRows();++i)
                         {
