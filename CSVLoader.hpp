@@ -21,10 +21,12 @@ author : @rebwar_ai
 #include <random>    // for std::mt19937, std::random_device
 #include <algorithm> // for std::shuffle
 #include "log.hpp"
+#include <sstream>
 
 namespace CSV {
 
     // Treat labels not equal to "Move-Forward" as collisions
+    // Move-Forward - Slight-Right-Turn - Sharp-Right-Turn - Move-Forward
     bool isCollisionLabel(const std::string& label) {
         static std::unordered_set<std::string> noCollisionLabels = {
             "Move-Forward"
@@ -41,7 +43,9 @@ namespace CSV {
 
         // Expecting 24 sensor values
         for (int i = 0; i < 24; ++i) {
-            if (!std::getline(ss, token, ',')) return false;
+            if (!std::getline(ss, token, ',')){
+                return false;
+            }
             try {
                 tempFeatures.push_back(std::stod(token));
             } catch (...) {
@@ -50,7 +54,9 @@ namespace CSV {
         }
 
         // Read final label
-        if (!std::getline(ss, token)) return false;
+        if (!std::getline(ss, token)){
+            return false;
+        }
         label = labelMapper(token);
 
         features = std::move(tempFeatures);
@@ -221,4 +227,3 @@ namespace CSV {
 } // namespace CSV
 
 #endif // CSV_LOADER
-
