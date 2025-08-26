@@ -69,8 +69,14 @@ namespace CSV {
         size_t positive = 0, negative = 0;
         for (const auto& label : labels) {
             
-            if (!label.empty() && label[0] >= 0.5) positive++;
-            else negative++;
+            if (!label.empty() && label[0] >= 0.5)
+            {
+                positive++;
+            }
+            else
+            {
+                negative++;
+            }
         }
 
         size_t total = labels.size();
@@ -227,3 +233,4 @@ namespace CSV {
 } // namespace CSV
 
 #endif // CSV_LOADER
+
