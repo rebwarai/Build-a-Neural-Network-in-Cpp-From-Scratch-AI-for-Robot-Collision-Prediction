@@ -69,11 +69,11 @@ namespace CSV {
         size_t positive = 0, negative = 0;
         for (const auto& label : labels) {
             
-            if (!label.empty() && label[0] >= 0.5)
+            if (!label.empty() && label[0] >= 0.5) 
             {
                 positive++;
             }
-            else
+            else 
             {
                 negative++;
             }
@@ -95,7 +95,7 @@ namespace CSV {
     }
 
     // ✅ Full definition with labelMapper
-    bool loadSensorDataBinary(const std::string& filename,
+    bool loadSensorData(const std::string& filename,
                               std::vector<std::vector<double>>& features,
                               std::vector<std::vector<double>>& labels,
                               std::vector<int>& ids,
@@ -138,7 +138,7 @@ namespace CSV {
         std::vector<std::vector<double>> all_labels;
         std::vector<int> all_ids;
 
-        if (!loadSensorDataBinary(filename, all_features, all_labels, all_ids, labelMapper)) {
+        if (!loadSensorData(filename, all_features, all_labels, all_ids, labelMapper)) {
             return false;
         }
 
@@ -233,4 +233,3 @@ namespace CSV {
 } // namespace CSV
 
 #endif // CSV_LOADER
-
