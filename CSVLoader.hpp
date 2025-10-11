@@ -4,7 +4,7 @@ author : @rebwar_ai
 // University of California, Irvine (UCI)
 // UCI Wall-Following Robot Navigation Dataset (sensor_readings_24.csv)
 // https://www.kaggle.com/datasets/uciml/wall-following-robot
-//['Slight-Right-Turn', 'Sharp-Right-Turn', 'Move-Forward', 'Slight-Left-Turn']
+//['Slight-Right-Turn', 'Sharp-Right-Turn', 'Move-Forward']
 
 #ifndef CSV_LOADER
 #define CSV_LOADER
@@ -202,3 +202,4 @@ namespace CSV {
 } // namespace CSV
 
 #endif // CSV_LOADER
+
