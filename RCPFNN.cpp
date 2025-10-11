@@ -42,7 +42,7 @@ int main(){
             cin >> load_model;
             if (load_model == "y" || load_model == "Y") {
                 // load model
-                cout << "Saving model...\n";
+                cout << "Loading model...\n";
                 nn.loadModel();
             } else {
                 load_model = "n";
@@ -138,4 +138,5 @@ int main(){
 // layers.emplace_back(1, 64, ActivationType::ReLU);
 // layers.emplace_back(2, 32, ActivationType::ReLU);
 // layers.emplace_back(3, 16, ActivationType::ReLU);
+
 // layers.emplace_back(4, 1, ActivationType::Sigmoid);
