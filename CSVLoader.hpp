@@ -124,25 +124,25 @@ namespace CSV {
 
     // ✅ Splits into train/test sets
     bool loadAndSplitSensorData(const std::string& filename,
-                               std::vector<std::vector<double>>& training_features,
-                               std::vector<std::vector<double>>& training_labels,
-                               std::vector<int>& training_ids,
-                               std::vector<std::vector<double>>& testing_features,
-                               std::vector<std::vector<double>>& testing_labels,
-                               std::vector<int>& testing_ids,
-                               double train_ratio = 0.8,
-                               const std::function<int(const std::string&)>& labelMapper =
-                                  [](const std::string& l) { return isCollisionLabel(l) ? 1 : 0; })
+                                std::vector<std::vector<double>>& training_features,
+                                std::vector<std::vector<double>>& training_labels,
+                                std::vector<int>& training_ids,
+                                std::vector<std::vector<double>>& test_features,
+                                std::vector<std::vector<double>>& test_labels,
+                                std::vector<int>& test_ids,
+                                double train_ratio = 0.8,
+                                const std::function<int(const std::string&)>& labelMapper = 
+                                    [](const std::string& l) {return isCollisionLabel(l) ? 1 : 0;})
     {
         std::vector<std::vector<double>> all_features;
         std::vector<std::vector<double>> all_labels;
         std::vector<int> all_ids;
 
-        if (!loadSensorData(filename, all_features, all_labels, all_ids, labelMapper)) {
+        if(!loadSensorData(filename,all_features,all_labels,all_ids,labelMapper))
+        {
             return false;
         }
 
-        // Shuffle all data together
         std::vector<size_t> indices(all_features.size());
         std::iota(indices.begin(), indices.end(), 0);
         std::mt19937 gen(std::random_device{}());
@@ -150,16 +150,14 @@ namespace CSV {
 
         std::vector<std::vector<double>> features_shuffled;
         std::vector<std::vector<double>> labels_shuffled;
-
-        
-
         std::vector<int> ids_shuffled;
 
         features_shuffled.reserve(all_features.size());
         labels_shuffled.reserve(all_labels.size());
         ids_shuffled.reserve(all_ids.size());
 
-        for (size_t i : indices) {
+        for(size_t i : indices)
+        {
             features_shuffled.push_back(std::move(all_features[i]));
             labels_shuffled.push_back(std::move(all_labels[i]));
             ids_shuffled.push_back(all_ids[i]);
@@ -173,61 +171,32 @@ namespace CSV {
         training_labels.assign(labels_shuffled.begin(), labels_shuffled.begin() + train_size);
         training_ids.assign(ids_shuffled.begin(), ids_shuffled.begin() + train_size);
 
-        testing_features.assign(features_shuffled.begin() + train_size, features_shuffled.end());
-        testing_labels.assign(labels_shuffled.begin() + train_size, labels_shuffled.end());
-        testing_ids.assign(ids_shuffled.begin() + train_size, ids_shuffled.end());
+        test_features.assign(features_shuffled.begin() + train_size, features_shuffled.end());
+        test_labels.assign(labels_shuffled.begin() + train_size, labels_shuffled.end());
+        test_ids.assign(ids_shuffled.begin() + train_size, ids_shuffled.end());
+
+
 
         std::stringstream data;
 
         data << "Dataset split: " << train_size << " training samples, "
-                  << (features_shuffled.size() - train_size) << " testing samples.\n";
+                  << (features_shuffled.size() - train_size) << " test samples.\n";
         data << "-----------------training set-------------------" << std::endl;
         data << "Features: " << training_features.size() << " samples, "
             << (training_features.empty() ? 0 : training_features[0].size()) << " features each\n";
         data << "Labels: " << training_labels.size() << "\n";
         data << "IDs: " << training_ids.size() << "\n";
-        data << "-----------------testing set-------------------" << std::endl;
-        data << "Features: " << testing_features.size() << " samples, "
-            << (testing_features.empty() ? 0 : testing_features[0].size()) << " features each\n";
-        data << "Labels: " << testing_labels.size() << "\n";
-        data << "IDs: " << testing_ids.size() << "\n";
+        data << "-----------------test set-------------------" << std::endl;
+        data << "Features: " << test_features.size() << " samples, "
+            << (test_features.empty() ? 0 : test_features[0].size()) << " features each\n";
+        data << "Labels: " << test_labels.size() << "\n";
+        data << "IDs: " << test_ids.size() << "\n";
         data << "------------------------------------" << std::endl;
 
         std::cout << data.str();
         L::log(data.str());
+
         return true;
-    }
-
-    inline void shuffleDataset(std::vector<std::vector<double>>& features,
-                               std::vector<std::vector<double>>& labels,
-                               std::vector<int>& ids) {
-        if (features.size() != labels.size() || features.size() != ids.size()) {
-            std::cerr << "Error: Size mismatch during shuffle.\n";
-            return;
-        }
-
-        std::vector<size_t> indices(features.size());
-        std::iota(indices.begin(), indices.end(), 0);
-        std::mt19937 gen(std::random_device{}());
-        std::shuffle(indices.begin(), indices.end(), gen);
-
-        std::vector<std::vector<double>> features_shuffled;
-        std::vector<std::vector<double>> labels_shuffled;
-        std::vector<int> ids_shuffled;
-
-        features_shuffled.reserve(features.size());
-        labels_shuffled.reserve(labels.size());
-        ids_shuffled.reserve(ids.size());
-
-        for (size_t i : indices) {
-            features_shuffled.push_back(std::move(features[i]));
-            labels_shuffled.push_back(std::move(labels[i]));
-            ids_shuffled.push_back(ids[i]);
-        }
-
-        features = std::move(features_shuffled);
-        labels = std::move(labels_shuffled);
-        ids = std::move(ids_shuffled);
     }
 
 } // namespace CSV
