@@ -4,6 +4,7 @@ author : @rebwar_ai
 #include <iostream>
 #include <vector>
 #include <stdexcept>
+#include <iomanip>
 #include "Layer.hpp"
 #include "NeuralNetwork.hpp"
 #include "CSVLoader.hpp"
@@ -42,7 +43,7 @@ int main(){
             cin >> load_model;
             if (load_model == "y" || load_model == "Y") {
                 // load model
-                cout << "Loading model...\n";
+                cout << "Loading the model...\n";
                 nn.loadModel();
             } else {
                 load_model = "n";
@@ -93,8 +94,8 @@ int main(){
 
         int total = tp + tn + fp + fn;
         double accuracy = static_cast<double>(tp + tn) / total;
-        double precision = tp + fp == 0 ? 0.0 : static_cast<double>(tp) / (tp + fp);
-        double recall    = tp + fn == 0 ? 0.0 : static_cast<double>(tp) / (tp + fn);
+        double precision = (tp + fp) == 0 ? 0.0 : static_cast<double>(tp) / (tp + fp);
+        double recall    = (tp + fn) == 0 ? 0.0 : static_cast<double>(tp) / (tp + fn);
         double f1_score  = (precision + recall) == 0 ? 0.0 :
             2.0 * (precision * recall) / (precision + recall);
 
@@ -119,7 +120,7 @@ int main(){
             cin >> save_model;
             if (save_model == "y" || save_model == "Y") {
                 // Save model
-                cout << "Saving model...\n";
+                cout << "Saving the model...\n";
                 nn.saveModel();
             } else {
                 cout << "Model not saved.\n";
@@ -140,3 +141,4 @@ int main(){
 // layers.emplace_back(3, 16, ActivationType::ReLU);
 
 // layers.emplace_back(4, 1, ActivationType::Sigmoid);
+
